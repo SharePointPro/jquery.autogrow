@@ -22,6 +22,8 @@
         var $elements = this;
         var context = this.context;
 
+        $elements.attr('initial-height', $elements.height());
+
         // Set options default value if its value is invalid
         if (options === undefined) {
             options = selector instanceof Object? selector : {};
@@ -60,6 +62,7 @@
         if(element.tagName === 'TEXTAREA') {
             var $textarea = $(element);
             var $mirror = $('<div></div>');
+            var initalHeight = parseInt($textarea.attr('initial-height'));
 
             // Add mirror classes
             $mirror.addClass(mirrorClass);
@@ -95,7 +98,11 @@
                     $mirror.html(message);
 
                     // Set textarea height equal to mirror height
-                    $textarea.height($mirror.height());
+                    if ($mirror.height() >= initalHeight) {
+                        $textarea.height($mirror.height());
+                    } else {
+                        $textarea.height(initalHeight);
+                    }
                 })
 
                 // On resize change mirror styles
